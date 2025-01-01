@@ -1,0 +1,4 @@
+v2venv/
+.history/
+db.sqlite3
+__pycache__/
