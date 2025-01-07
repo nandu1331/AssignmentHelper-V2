@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from ..assignment_assist.models import Document
+from assignment_assist.models import Document
 
 
 class PDFChatSession(models.Model):

@@ -57,21 +57,21 @@ class QuizAttempt(models.Model):
         default=None
     )
     score = models.FloatField(
+        default=0.0,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(100)
         ]
     )
-    answers = models.JSONField()  # Stores the user's answers
+    answers = models.JSONField(default=list)  # Stores the user's answers
     started_at = models.DateTimeField(auto_now_add=True)
-    completed_at = models.DateTimeField(auto_now=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['-completed_at']
-        unique_together = ['quiz', 'user']
 
     def __str__(self):
-        return f"{self.user.username}'s attempt at {self.quiz.title} - {self.score}%"
+        return f"{self.user.username}'s attempt at {self.quiz.title} - {self.score}% - {'Completed' if self.completed_at else 'In Progress'}"
     
     @staticmethod
     def get_user_statistics(user):
