@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { Navigate } from 'react-router-dom';
 // ... imports
 import Login from './Login';
-import Logout from './LogOut';
+import NavBar from './components/NavBar';
 import PrivateRoute from './PrivateRoute';
 import AttemptsList from './components/AttemptList';
 
@@ -17,16 +17,7 @@ function App() {
     return (
         <Router>
             <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
-                <motion.nav className="container mx-auto p-4 flex justify-between items-center mt-4" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                    <div className="flex space-x-6">
-                        <Link to="/quizzes" className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg transition duration-300">Quizzes</Link>
-                        <Link to="/quiz/generate" className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg transition duration-300">Generate Quiz</Link>
-                        <Link to="/quiz/history" className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg transition duration-300">Quiz History</Link>
-                    </div>
-                    <div>
-                        {localStorage.getItem('access_token') ? <Logout /> : <Link to="/login" className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg transition duration-300">Login</Link>}
-                    </div>
-                </motion.nav>
+                <NavBar />
                 <div className="container mx-auto p-4 mt-8">
                     <Routes>
                         <Route path="/login" element={<Login />} />
