@@ -27,6 +27,7 @@ class Quiz(models.Model):
         choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')],
         default='medium'
     )
+    num_of_questions = models.IntegerField(default=5)
 
     class Meta:
         ordering = ['-created_at']

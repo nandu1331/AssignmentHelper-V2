@@ -2,14 +2,24 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Quiz, QuizAttempt, Question
-from .serializers import QuizSerializer, QuizAttemptSerializer, QuizAttemptCreateSerializer, QuizAttemptStatisticsSerializer
-from rest_framework.permissions import IsAuthenticated
+from .serializers import QuizSerializer, QuizAttemptSerializer, QuizAttemptCreateSerializer, QuizAttemptStatisticsSerializer, UserSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from django.shortcuts import get_object_or_404
 
+
+class SignupView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class QuizListAPIView(APIView):
     def get(self, request):
-        recent_quizzes = Quiz.objects.order_by('-created_at')[:5]
+        recent_quizzes = Quiz.objects.filter(created_by=request.user).order_by('-created_at')[:5]
         serializer = QuizSerializer(recent_quizzes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -25,16 +35,8 @@ class QuizAttemptAPIView(RetrieveAPIView):
     serializer = self.get_serializer(instance)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
-import json
 
 import json
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import QuizAttempt
-from .serializers import QuizAttemptSerializer # Import your standard serializer
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 class SubmitQuizAPIView(APIView):
@@ -207,6 +209,8 @@ class GenerateQuizAPIView(APIView):
             data = request.data  # DRF automatically parses JSON
             topic = data.get('topic')
             context = data.get('context', '')
+            difficulty = data.get('difficulty')
+            num_of_questions = data.get('numOfQuestions')
 
             if not topic:
                 return Response({'error': 'Topic is required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -214,7 +218,7 @@ class GenerateQuizAPIView(APIView):
             from .quiz_generator import QuizGenerator # Import inside the view to avoid circular imports.
 
             quiz_generator = QuizGenerator()
-            quiz_data = quiz_generator.generate_quiz(topic, context)
+            quiz_data = quiz_generator.generate_quiz(topic, context, difficulty, num_of_questions)
 
             if not quiz_data or 'questions' not in quiz_data:
                 return Response({'error': 'Failed to generate quiz, please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -224,6 +228,8 @@ class GenerateQuizAPIView(APIView):
                 topic=topic,
                 context=context,
                 created_by=request.user,
+                difficulty=difficulty,
+                num_of_questions=num_of_questions
             )
 
             for question in quiz_data['questions']:

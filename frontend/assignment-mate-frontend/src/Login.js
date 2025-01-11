@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from './axios';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -21,7 +22,7 @@ const Login = () => {
             localStorage.setItem('refresh_token', refresh);
             
             // Redirect to a protected route (e.g., /quizzes)
-            navigate('/quizzes');
+            navigate('/features');
         } catch (err) {
             setError(err.response?.data?.detail || "Invalid credentials.");
         }
@@ -42,6 +43,9 @@ const Login = () => {
                 </div>
                 <button type="submit" className="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-lg transition duration-300">Login</button>
             </form>
+            <p className="text-center text-gray-300 mt-6">
+                Don't have an account? <Link to="/signup" className="text-primary hover:underline hover:scale-105 hover:transition duration-300">Signup </Link>here
+            </p>
         </div>
     );
 };

@@ -6,7 +6,7 @@ class QuizGenerator:
     def __init__(self):
         self.client = Groq()
     
-    def generate_quiz(self, topic, context=None):
+    def generate_quiz(self, topic, context=None, difficulty='medium', numOfQuestions=5):
         prompt = f"""Generate a quiz about {topic}. 
         {f'Additional context: {context}' if context else ''}
         
@@ -24,7 +24,8 @@ class QuizGenerator:
             ]
         }}
         
-        Generate 5 questions with 4 options each. Ensure questions are challenging but fair.
+        Generate {numOfQuestions} questions with 4 options each. Ensure questions are challenging but fair. 
+        Keep the difficulty to {difficulty}.
         Important: Return only the JSON object, no additional text before or after.
         """
     

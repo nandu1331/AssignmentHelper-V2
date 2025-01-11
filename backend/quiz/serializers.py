@@ -7,7 +7,17 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):  # For representing users
     class Meta:
         model = User
-        fields = ('id', 'username', 'email') # Add other fields if needed
+        fields = ('id', 'username', 'email', 'password') # Add other fields if needed
+        extra_kwargs = {'password': {'write_only': True}}
+        
+    def create(self, validated_data):
+        user = User(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
