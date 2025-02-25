@@ -1,16 +1,15 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
 const FeatureTile = ({ title, description, image, linkTo, isHovered, onHoverStart, onHoverEnd, onTileClick }) => {
   return (
     <motion.div
-      className="feature-tile"
+      className="feature-tile cursor-pointer"
       whileHover={{ scale: 1.2, zIndex: 2 }} // Enlarges tile on hover
       onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
-      onClick={() => onTileClick(image)} // Trigger image transition
+      onClick={() => onTileClick(image, linkTo)} // Trigger image transition
       style={{
-        opacity: isHovered ? 1 : 0.4,
+        opacity: isHovered ? 1 : 0.7,
         filter: isHovered ? 'brightness(1.3)' : 'brightness(1)',
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}

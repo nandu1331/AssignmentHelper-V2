@@ -9,12 +9,12 @@ const FeatureTilesPage = () => {
   const [imageToTransition, setImageToTransition] = useState(null);
   const navigate = useNavigate();
 
-  const onTileClick = (image) => {
+  const onTileClick = (image, page) => {
     setImageToTransition(image);
 
     // Delay navigation until after the image transition completes
     setTimeout(() => {
-      navigate("/quiz/generate");
+      navigate(page);
     }, 2000); // Adjust this timeout to match the duration of the image transition
   };
 
@@ -56,7 +56,7 @@ const FeatureTilesPage = () => {
           title="Assignment Assist"
           description="Get help with your assignments."
           image="https://www.ilovepdf.com/storage/blog/226-1684403944-How-to-summarize-and-extract-text-from-PDF-with-AI-.png"
-          linkTo="/assignment-assist"
+          linkTo="/assignment-assist/uploadPDF"
           isHovered={hoveredTile?.title === 'Assignment Assist'}
           onHoverStart={() => onTileHoverStart('Assignment Assist', 'Get help with your assignments.')}
           onHoverEnd={onTileHoverEnd}

@@ -27,5 +27,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/quiz/', include('quiz.urls')),
     path('api/pdf-chat/', include('chat_with_PDFs.urls')),
-    path('', include('assignment_assist.urls')),
+    path('api/assignment-assist/', include('assignment_assist.urls')),
 ]

@@ -38,7 +38,7 @@ const QuizGenerator = () => {
             className='quiz-container'
         >
             <motion.div
-                className="container mx-auto p-8 bg-card-bg rounded-lg shadow-lg mt-10 max-w-[70%]"
+                className="container mx-auto p-8 bg-card-bg rounded-lg shadow-lg mt-10 max-w-[50%]"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
             >
